@@ -1,0 +1,98 @@
+Combinator
+----------
+1. \x -> xxx : combinator; no extra free variables
+2. \x y -> zx : not combinator; z is free
+3. \x y z -> xy(zx) : combinator; no extra free variables
+4. \x y z -> xy(zxy) : combinator; no extra  free variables
+5. \x y -> xy(zxy) : not combinator; z is free
+
+Diverge
+-------
+1. \x -> xxx : in beta normal form; no divergence
+2. (\z -> zz)(\y -> yy) : diverges; with one application, we get (\z -> zz)(\z -> zz).
+3. (\x -> xxx)z : with one application, we get zzz, which is just a value.
+
+Beta reduce
+-----------
+1. (\a b c -> cba)zz(\w v -> w)
+   [a := zz]
+   (\b c -> cb(zz))(\w v -> w)
+   [b := (\w v -> w)]
+   (\c -> c(\w v -> w)(zz))
+   [w := zz]
+   (\c -> c(\v -> zz))
+
+WRONG : [a := zz] step is incorrect. Each head variable must be bound to only
+one value; in this case, [a := z] is the correct step. The correct solution is
+as follows:
+
+1.* (\a b c -> cba)zz(\w v -> w)
+    [a := z]
+	(\b c -> cbz)z(\w v -> w)
+	[b := z]
+	(\c -> czz)(\w v -> w)
+	[c := (\w v -> w)]
+	(\w v -> w)zz
+	[w := z]
+	(\v -> z)z
+	[v := z]
+	z
+
+2. (\x -> (\y -> xyy))(\a -> a)b
+   (\x y -> xyy)(\a -> a)b
+   [x := (\a -> a)]
+   (\y -> (\a -> a)yy)b
+   [y := b]
+   (\a -> a)bb
+   [a := b]
+   bb
+
+3. (\y -> y)(\x -> xx)(\z -> zq)
+   [y := (\x -> xx)]
+   (\x -> xx)(\z -> zq)
+   [x := (\z -> zq)]
+   (\z -> zq)(\z -> zq)
+   [z := (\z -> zq)]
+   (\z -> zq)q
+   [z := q]
+   qq
+
+4. (\z -> z)(\z -> zz)(\z -> zy)
+   (\m -> m)(\n -> nn)(\z -> zy)
+   [m := (\n -> nn)]
+   (\n -> nn)(\z -> zy)
+   [n := (\z -> zy)]
+   (\z -> zy)(\z -> zy)
+   [z := (\z -> zy)]
+   (\z -> zy)y
+   [z := y]
+   yy
+
+5. (\x -> (\y -> xyy))(\y -> y)y
+   (\x y -> xyy)(\y -> y)y
+   (\m n -> mnn)(\k -> k)y
+   [m := (\k -> k)]
+   (\n -> (\k -> k)nn)y
+   [n := y]
+   (\k -> k)yy
+   [k := yy]
+   yy
+
+6. (\a -> aa)(\b -> ba)c
+   [a := (\b -> ba)]
+   (\b -> ba)(\b -> ba)c
+   [b := (\b -> ba)]
+   (\b -> ba)ac
+   [b := ac]
+   aca
+
+7. (\x y z -> xz(yz))(\x -> z)(\x -> a)
+   [x := (\x -> z)]
+   (\y z -> (\x -> z)z(yz))(\x -> a)
+   [y := (\x -> a)]
+   (\z -> (\x -> z)z((\x -> a)z))
+   [x := z]
+   (\z -> z((\x -> a)z))
+   [x := z]
+   (\z -> z(a))
+   (\z -> za)
