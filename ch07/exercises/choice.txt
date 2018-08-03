@@ -1,0 +1,5 @@
+1. A polymorphic function may resolve to values of different types, depending on inputs
+2. :t (g . f) is (Char -> [String])
+3. (Ord a, Num a) => a -> Bool
+4. (a -> b) -> c is a higher-order function
+5. f True :: Bool
