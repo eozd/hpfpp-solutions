@@ -1,0 +1,5 @@
+1. The Eq class "makes equality tests possible"
+2. Ord "allows any two values to be compared" and "is a subclass of Eq"
+3. (Ord a) => a -> a -> Bool
+4. In x = divMod 16 12, (Integral a => (a, a))
+5. Integral includes Int and Integer numbers
