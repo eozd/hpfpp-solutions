@@ -1,0 +1,24 @@
+name:                wordnumber
+version:             0.1.0.0
+cabal-version:       >=1.10
+build-type:          Simple
+-- synopsis:
+-- description:
+
+library
+  exposed-modules:    WordNumber
+  ghc-options:        -Wall -fwarn-tabs
+  build-depends:      base >= 4.7 && < 5
+  hs-source-dirs:     src
+  default-language:   Haskell2010
+
+test-suite tests
+  ghc-options:        -Wall -fno-warn-orphans
+  type:               exitcode-stdio-1.0
+  main-is:            Main.hs
+  hs-source-dirs:     tests
+  build-depends:      base
+                    , hspec
+                    , QuickCheck
+                    , wordnumber
+  default-language:   Haskell2010
